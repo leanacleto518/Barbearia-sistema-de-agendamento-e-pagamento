@@ -1,0 +1,1064 @@
+/* ========================================
+   BARBEARIA BRUM - IDENTIDADE VISUAL
+   Design monocromático elegante e sofisticado
+======================================== */
+
+/* Importação das fontes */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* ========================================
+   VARIÁVEIS CSS - PALETA MONOCROMÁTICA
+======================================== */
+:root {
+  /* Cores principais - Apenas preto, branco e cinzas */
+  --preto-profundo: #000000;
+  --preto-carvao: #0F0F0F;
+  --cinza-escuro: #1A1A1A;
+  --cinza-medio: #2B2B2B;
+  --cinza-claro: #666666;
+  --cinza-suave: #999999;
+  --branco-puro: #FFFFFF;
+  --branco-gelo: #F8F8F8;
+  --branco-off: #F5F5F5;
+  
+  /* Tipografia */
+  --font-titulo: 'Playfair Display', serif;
+  --font-texto: 'Montserrat', sans-serif;
+  
+  /* Espaçamentos */
+  --espacamento-xs: 0.5rem;
+  --espacamento-sm: 1rem;
+  --espacamento-md: 1.5rem;
+  --espacamento-lg: 2rem;
+  --espacamento-xl: 3rem;
+  --espacamento-xxl: 4rem;
+  
+  /* Bordas */
+  --borda-radius: 6px;
+  --borda-radius-lg: 12px;
+  --borda-sutil: 1px solid rgba(0, 0, 0, 0.1);
+  --borda-media: 2px solid rgba(0, 0, 0, 0.15);
+  
+  /* Sombras elegantes */
+  --sombra-sutil: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --sombra-media: 0 4px 24px rgba(0, 0, 0, 0.12);
+  --sombra-forte: 0 8px 32px rgba(0, 0, 0, 0.16);
+  --sombra-inset: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+  /* Transições */
+  --transicao-rapida: 0.2s ease;
+  --transicao-media: 0.3s ease;
+  --transicao-lenta: 0.5s ease;
+}
+
+/* ========================================
+   RESET E BASE
+======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-texto);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--preto-carvao);
+  background-color: var(--branco-gelo);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   HEADER E NAVEGAÇÃO ELEGANTE
+======================================== */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: var(--borda-sutil);
+  padding: var(--espacamento-md) 0;
+  transition: all var(--transicao-media);
+}
+
+header.scrolled {
+  background: rgba(0, 0, 0, 0.98);
+  box-shadow: var(--sombra-media);
+  padding: var(--espacamento-sm) 0;
+}
+
+.titulo {
+  list-style: none;
+  text-align: center;
+  margin-bottom: var(--espacamento-sm);
+}
+
+.titulo h1 {
+  font-family: var(--font-titulo);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.titulo h1 a {
+  color: var(--branco-puro);
+  text-decoration: none;
+  transition: all var(--transicao-media);
+  position: relative;
+}
+
+.titulo h1 a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--branco-puro);
+  transition: all var(--transicao-media);
+  transform: translateX(-50%);
+}
+
+.titulo h1 a:hover::after {
+  width: 100%;
+}
+
+.informacoes {
+  text-align: center;
+}
+
+.menu-direito {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: var(--espacamento-xl);
+}
+
+.menu-direito li a {
+  color: var(--branco-puro);
+  text-decoration: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.85rem;
+  padding: var(--espacamento-sm) var(--espacamento-md);
+  border-radius: var(--borda-radius);
+  transition: all var(--transicao-media);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-direito li a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left var(--transicao-lenta);
+}
+
+.menu-direito li a:hover::before {
+  left: 100%;
+}
+
+.menu-direito li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ========================================
+   CARROSSEL HERO SECTION - SEM FILTROS AZUIS
+======================================== */
+.carrosel-conteiner {
+  position: relative;
+  width: 100%;
+  height: 50vh; /* Diminuído de 75vh para 50vh */
+  min-height: 400px; /* Diminuído de 600px para 400px */
+  overflow: hidden;
+  margin-top: 90px;
+  border-bottom: var(--borda-sutil);
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  transform: translateX(100%);
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide.prev {
+  transform: translateX(-100%);
+}
+
+/* CORREÇÃO: Removendo filtros azulados das imagens */
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Removido: filter com hue-rotate e sepia que causavam tons azulados */
+  filter: grayscale(20%) contrast(1.1) brightness(0.9);
+}
+
+/* Indicadores do carrossel - Design minimalista */
+.carousel-indicators {
+  position: absolute;
+  bottom: var(--espacamento-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--espacamento-md);
+  z-index: 10;
+}
+
+.indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--transicao-media);
+  backdrop-filter: blur(5px);
+}
+
+.indicator.active {
+  background: var(--branco-puro);
+  border-color: var(--branco-puro);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+.indicator:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--branco-puro);
+  transform: scale(1.2);
+}
+
+.indicator:focus {
+  outline: 2px solid var(--branco-puro);
+  outline-offset: 4px;
+}
+
+/* ========================================
+   SEÇÃO CTA - DESIGN SOFISTICADO
+======================================== */
+.cta-section {
+  background: linear-gradient(135deg, var(--cinza-escuro) 0%, var(--preto-carvao) 100%);
+  padding: var(--espacamento-xxl) var(--espacamento-xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--espacamento-xxl);
+  border-top: var(--borda-sutil);
+  border-bottom: var(--borda-sutil);
+}
+
+.cta-botao {
+  flex: 1;
+}
+
+.btn-agendar {
+  background: linear-gradient(135deg, var(--preto-profundo) 0%, var(--cinza-escuro) 100%);
+  color: var(--branco-puro);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: var(--espacamento-lg) var(--espacamento-xxl);
+  font-family: var(--font-texto);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: var(--borda-radius-lg);
+  cursor: pointer;
+  transition: all var(--transicao-media);
+  box-shadow: var(--sombra-forte);
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacamento-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-agendar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left var(--transicao-lenta);
+}
+
+.btn-agendar:hover::before {
+  left: 100%;
+}
+
+.btn-agendar:hover {
+  background: linear-gradient(135deg, var(--cinza-escuro) 0%, var(--cinza-medio) 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+
+.btn-agendar:active,
+.btn-agendar.clicked {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.btn-agendar:focus {
+  outline: 2px solid var(--branco-puro);
+  outline-offset: 4px;
+}
+
+.btn-agendar i {
+  font-size: 1.2rem;
+}
+
+.horario-info {
+  flex: 1;
+  color: var(--branco-puro);
+  text-align: right;
+}
+
+.horario-info h3 {
+  font-family: var(--font-titulo);
+  font-size: 1.4rem;
+  margin-bottom: var(--espacamento-md);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--espacamento-sm);
+  letter-spacing: 1px;
+}
+
+.horario-info h3 i {
+  font-size: 1.6rem;
+}
+
+.horario-info p {
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+.status-atual {
+  margin-top: var(--espacamento-md);
+  padding: var(--espacamento-sm) var(--espacamento-md);
+  border-radius: var(--borda-radius);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  border: 2px solid transparent;
+  transition: all var(--transicao-media);
+}
+
+.status-atual.aberto {
+  background-color: var(--branco-puro);
+  color: var(--preto-profundo);
+  border-color: var(--branco-puro);
+}
+
+.status-atual.fechado {
+  background-color: var(--cinza-medio);
+  color: var(--branco-puro);
+  border-color: var(--cinza-claro);
+}
+
+/* ========================================
+   MAIN CONTENT - LAYOUT SOFISTICADO
+======================================== */
+main {
+  padding: var(--espacamento-xxl) var(--espacamento-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Seção de informações da barbearia - Design elegante */
+.informacoes-barbearia {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--espacamento-xl);
+  margin-bottom: var(--espacamento-xxl);
+  padding: var(--espacamento-xxl);
+  background: var(--branco-puro);
+  border-radius: var(--borda-radius-lg);
+  box-shadow: var(--sombra-media);
+  border: var(--borda-sutil);
+  position: relative;
+}
+
+.informacoes-barbearia::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--preto-profundo), var(--cinza-escuro), var(--preto-profundo));
+  border-radius: var(--borda-radius-lg) var(--borda-radius-lg) 0 0;
+}
+
+.localizacao,
+.horario-atendimento,
+.formas-pagamento {
+  text-align: center;
+  padding: var(--espacamento-lg);
+  border-radius: var(--borda-radius);
+  transition: all var(--transicao-media);
+}
+
+.localizacao:hover,
+.horario-atendimento:hover,
+.formas-pagamento:hover {
+  background: var(--branco-off);
+  transform: translateY(-5px);
+  box-shadow: var(--sombra-sutil);
+}
+
+.icone-secao {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--preto-profundo), var(--cinza-escuro));
+  border-radius: 50%;
+  margin: 0 auto var(--espacamento-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--branco-puro);
+  box-shadow: var(--sombra-media);
+  transition: all var(--transicao-media);
+}
+
+.icone-secao:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--sombra-forte);
+}
+
+.localizacao h2,
+.horario-atendimento h2,
+.formas-pagamento h2 {
+  font-family: var(--font-titulo);
+  font-size: 1.6rem;
+  color: var(--preto-profundo);
+  margin-bottom: var(--espacamento-lg);
+  position: relative;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.localizacao h2::after,
+.horario-atendimento h2::after,
+.formas-pagamento h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--preto-profundo), var(--cinza-escuro));
+  margin: var(--espacamento-sm) auto;
+  border-radius: 2px;
+}
+
+.horario-atendimento ul {
+  list-style: none;
+  text-align: left;
+  max-width: 250px;
+  margin: 0 auto;
+}
+
+.horario-atendimento li {
+  padding: var(--espacamento-sm) 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: var(--espacamento-sm);
+  font-weight: 500;
+  transition: all var(--transicao-rapida);
+}
+
+.horario-atendimento li:hover {
+  padding-left: var(--espacamento-sm);
+  color: var(--preto-profundo);
+}
+
+.horario-atendimento li:last-child {
+  border-bottom: none;
+}
+
+.horario-atendimento li i {
+  font-size: 1.1rem;
+}
+
+.horario-atendimento li:nth-child(3) i {
+  color: var(--cinza-claro);
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacamento-sm);
+  align-items: center;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  gap: var(--espacamento-sm);
+  padding: var(--espacamento-xs) var(--espacamento-md);
+  background: var(--branco-off);
+  border-radius: var(--borda-radius);
+  font-weight: 500;
+  transition: all var(--transicao-rapida);
+  border: 1px solid transparent;
+}
+
+.payment-item:hover {
+  background: var(--cinza-escuro);
+  color: var(--branco-puro);
+  border-color: var(--cinza-escuro);
+  transform: scale(1.05);
+}
+
+.payment-item i {
+  font-size: 1.2rem;
+}
+
+/* Botões de ação - Design sofisticado */
+.acoes {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: var(--espacamento-xl);
+  margin-top: var(--espacamento-xl);
+  padding-top: var(--espacamento-xl);
+  border-top: 2px solid var(--branco-off);
+}
+
+.acoes button,
+.acoes a {
+  padding: var(--espacamento-md) var(--espacamento-xl);
+  font-family: var(--font-texto);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--borda-radius);
+  text-decoration: none;
+  transition: all var(--transicao-media);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--espacamento-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.acoes button::before,
+.acoes a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left var(--transicao-lenta);
+}
+
+.acoes button:hover::before,
+.acoes a:hover::before {
+  left: 100%;
+}
+
+.acoes button {
+  background: linear-gradient(135deg, var(--preto-profundo), var(--cinza-escuro));
+  color: var(--branco-puro);
+  border: 2px solid var(--preto-profundo);
+}
+
+.acoes button:hover {
+  background: linear-gradient(135deg, var(--cinza-escuro), var(--cinza-medio));
+  border-color: var(--cinza-escuro);
+  transform: translateY(-3px);
+  box-shadow: var(--sombra-media);
+}
+
+.acoes a {
+  background: transparent;
+  color: var(--preto-profundo);
+  border: 2px solid var(--preto-profundo);
+}
+
+.acoes a:hover {
+  background: var(--preto-profundo);
+  color: var(--branco-puro);
+  transform: translateY(-3px);
+  box-shadow: var(--sombra-media);
+}
+
+/* ========================================
+   INFORMAÇÕES ADICIONAIS - CARDS ELEGANTES
+======================================== */
+.informacoes-adicionais {
+  margin-bottom: var(--espacamento-xxl);
+}
+
+.informacoes-adicionais h2 {
+  font-family: var(--font-titulo);
+  font-size: 2.5rem;
+  text-align: center;
+  color: var(--preto-profundo);
+  margin-bottom: var(--espacamento-xxl);
+  font-weight: 700;
+  letter-spacing: -1px;
+  position: relative;
+}
+
+.informacoes-adicionais h2::after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--preto-profundo), var(--cinza-escuro));
+  margin: var(--espacamento-lg) auto;
+  border-radius: 2px;
+}
+
+.diferenciais {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--espacamento-xl);
+}
+
+.diferencial {
+  background: var(--branco-puro);
+  padding: var(--espacamento-xxl);
+  border-radius: var(--borda-radius-lg);
+  box-shadow: var(--sombra-sutil);
+  text-align: center;
+  transition: all var(--transicao-media);
+  border: var(--borda-sutil);
+  position: relative;
+  overflow: hidden;
+}
+
+.diferencial::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--preto-profundo), var(--cinza-escuro));
+  transform: scaleX(0);
+  transition: transform var(--transicao-media);
+}
+
+.diferencial:hover::before {
+  transform: scaleX(1);
+}
+
+.diferencial:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--sombra-forte);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.diferencial-icone {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--preto-profundo), var(--cinza-escuro));
+  border-radius: 50%;
+  margin: 0 auto var(--espacamento-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--branco-puro);
+  box-shadow: var(--sombra-media);
+  transition: all var(--transicao-media);
+}
+
+.diferencial:hover .diferencial-icone {
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: var(--sombra-forte);
+}
+
+.diferencial h3 {
+  font-family: var(--font-titulo);
+  font-size: 1.5rem;
+  color: var(--preto-profundo);
+  margin-bottom: var(--espacamento-md);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.diferencial p {
+  color: var(--cinza-claro);
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* ========================================
+   PERFIL DO USUÁRIO - DESIGN MODERNO
+======================================== */
+.perfil-usuario {
+  background: linear-gradient(135deg, var(--cinza-escuro) 0%, var(--preto-carvao) 100%);
+  color: var(--branco-puro);
+  padding: var(--espacamento-xxl);
+  border-radius: var(--borda-radius-lg);
+  text-align: center;
+  box-shadow: var(--sombra-forte);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.perfil-usuario h2 {
+  font-family: var(--font-titulo);
+  font-size: 2rem;
+  margin-bottom: var(--espacamento-xl);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacamento-sm);
+}
+
+.perfil-usuario h2 i {
+  font-size: 2.2rem;
+}
+
+.dados-usuario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacamento-xl);
+}
+
+.placeholder-foto {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, var(--cinza-medio), var(--cinza-escuro));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--branco-puro);
+  box-shadow: var(--sombra-media);
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  transition: all var(--transicao-media);
+}
+
+.placeholder-foto:hover {
+  transform: scale(1.1);
+  box-shadow: var(--sombra-forte);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.info-usuario {
+  text-align: left;
+}
+
+.nome-usuario {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: var(--espacamento-sm);
+  letter-spacing: -0.5px;
+}
+
+.link-perfil {
+  color: var(--branco-puro);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all var(--transicao-media);
+  display: flex;
+  align-items: center;
+  gap: var(--espacamento-xs);
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.link-perfil:hover {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+.link-perfil i {
+  font-size: 1.1rem;
+  transition: transform var(--transicao-media);
+}
+
+.link-perfil:hover i {
+  transform: translateX(3px);
+}
+
+/* ========================================
+   RESPONSIVIDADE MOBILE
+======================================== */
+@media (max-width: 768px) {
+  /* Header mobile */
+  .titulo h1 {
+    font-size: 1.8rem;
+  }
+  
+  .menu-direito {
+    flex-direction: column;
+    gap: var(--espacamento-sm);
+  }
+  
+  /* Carrossel mobile */
+  .carrosel-conteiner {
+    height: 40vh; /* Diminuído para mobile */
+    min-height: 300px; /* Diminuído para mobile */
+    margin-top: 120px;
+  }
+  
+  .carousel-indicators {
+    bottom: var(--espacamento-lg);
+  }
+  
+  /* CTA Section mobile */
+  .cta-section {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--espacamento-xl);
+    padding: var(--espacamento-xl) var(--espacamento-lg);
+  }
+  
+  .horario-info {
+    text-align: center;
+  }
+  
+  .horario-info h3 {
+    justify-content: center;
+  }
+  
+  /* Main content mobile */
+  main {
+    padding: var(--espacamento-xl) var(--espacamento-lg);
+  }
+  
+  .informacoes-barbearia {
+    grid-template-columns: 1fr;
+    padding: var(--espacamento-xl);
+  }
+  
+  .acoes {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .acoes button,
+  .acoes a {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+  
+  .diferenciais {
+    grid-template-columns: 1fr;
+  }
+  
+  .dados-usuario {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .info-usuario {
+    text-align: center;
+  }
+  
+  .link-perfil {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .carrosel-conteiner {
+    height: 35vh; /* Ainda menor para telas pequenas */
+    min-height: 250px; /* Menor para telas pequenas */
+  }
+  
+  .informacoes-adicionais h2 {
+    font-size: 2rem;
+  }
+  
+  .diferencial {
+    padding: var(--espacamento-xl);
+  }
+  
+  .diferencial-icone {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+  
+  .btn-agendar {
+    padding: var(--espacamento-md) var(--espacamento-lg);
+    font-size: 1rem;
+  }
+}
+
+/* ========================================
+   ANIMAÇÕES ELEGANTES
+======================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.informacoes-barbearia {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.diferencial:nth-child(1) {
+  animation: slideInLeft 0.8s ease-out 0.2s both;
+}
+
+.diferencial:nth-child(2) {
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.diferencial:nth-child(3) {
+  animation: slideInRight 0.8s ease-out 0.6s both;
+}
+
+.perfil-usuario {
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+/* ========================================
+   ACESSIBILIDADE E PERFORMANCE
+======================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states aprimorados para acessibilidade */
+button:focus,
+a:focus {
+  outline: 3px solid var(--preto-profundo);
+  outline-offset: 3px;
+}
+
+/* Estados de foco para elementos interativos */
+.indicator:focus,
+.btn-agendar:focus {
+  outline: 3px solid var(--branco-puro);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   UTILITÁRIOS
+======================================== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Classe para elementos que devem aparecer apenas no hover */
+.hover-reveal {
+  opacity: 0;
+  transition: opacity var(--transicao-media);
+}
+
+.hover-reveal:hover {
+  opacity: 1;
+}
+
+/* Separadores elegantes */
+.separator {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cinza-claro), transparent);
+  margin: var(--espacamento-xl) 0;
+}
+
+/* Efeito de brilho sutil para elementos premium */
+.premium-glow {
+  position: relative;
+}
+
+.premium-glow::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--preto-profundo), var(--cinza-escuro), var(--preto-profundo));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transicao-media);
+}
+
+.premium-glow:hover::after {
+  opacity: 0.3;
+}
