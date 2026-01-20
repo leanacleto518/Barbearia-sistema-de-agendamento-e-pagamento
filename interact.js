@@ -384,6 +384,359 @@ class BusinessHours {
 
 /**
  * ========================================
+ * SISTEMA DE AGENDAMENTO - GOOGLE SHEETS
+ * Envia dados do formulário para planilha
+ * ========================================
+ */
+class AgendamentoSystem {
+  constructor() {
+    // URL do Google Apps Script - CONFIGURADO!
+    this.scriptURL = 'https://script.google.com/macros/s/AKfycbzNkK3rSrcq2xmPPnSWsDpEMY43_vR1TZqVba83jvijMbWxqij5Lq675LKKL3i-Psjn/exec';
+    
+    this.form = document.getElementById('agendamento-form');
+    this.submitBtn = document.getElementById('btn-agendar-form');
+    
+    this.init();
+  }
+
+  /**
+   * Inicializa o sistema de agendamento
+   */
+  init() {
+    this.setupEventListeners();
+    this.setupDateRestrictions();
+    
+    console.log('📅 Sistema de agendamento inicializado');
+  }
+
+  /**
+   * Configura event listeners
+   */
+  setupEventListeners() {
+    if (this.form) {
+      this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+    }
+
+    // Máscara para telefone
+    const phoneInput = document.getElementById('cliente-telefone');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', (e) => this.formatPhone(e));
+    }
+
+    // Validação em tempo real
+    const inputs = this.form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('blur', () => this.validateField(input));
+    });
+  }
+
+  /**
+   * Configura restrições de data
+   */
+  setupDateRestrictions() {
+    const dateInput = document.getElementById('data-preferida');
+    if (dateInput) {
+      // Data mínima: hoje
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.min = today;
+      
+      // Data máxima: 30 dias a partir de hoje
+      const maxDate = new Date();
+      maxDate.setDate(maxDate.getDate() + 30);
+      dateInput.max = maxDate.toISOString().split('T')[0];
+    }
+  }
+
+  /**
+   * Formata número de telefone
+   */
+  formatPhone(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    
+    if (value.length <= 11) {
+      value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      if (value.length < 14) {
+        value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+      }
+    }
+    
+    e.target.value = value;
+  }
+
+  /**
+   * Valida campo individual
+   */
+  validateField(field) {
+    const value = field.value.trim();
+    let isValid = true;
+    let message = '';
+
+    switch (field.id) {
+      case 'cliente-nome':
+        isValid = value.length >= 2;
+        message = 'Nome deve ter pelo menos 2 caracteres';
+        break;
+      
+      case 'cliente-telefone':
+        const cleanPhone = value.replace(/\D/g, '');
+        isValid = cleanPhone.length >= 10 && cleanPhone.length <= 11;
+        message = 'Telefone deve ter 10 ou 11 dígitos';
+        break;
+      
+      case 'data-preferida':
+        const selectedDate = new Date(value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        isValid = selectedDate >= today;
+        message = 'Data deve ser hoje ou futura';
+        break;
+    }
+
+    this.setFieldValidation(field, isValid, message);
+    return isValid;
+  }
+
+  /**
+   * Define estado de validação do campo
+   */
+  setFieldValidation(field, isValid, message) {
+    field.style.borderColor = isValid ? 
+      'rgba(255, 255, 255, 0.2)' : 
+      '#ef4444';
+    
+    // Remove mensagem anterior
+    const existingError = field.parentNode.querySelector('.field-error');
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Adiciona mensagem de erro se necessário
+    if (!isValid && message) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'field-error';
+      errorDiv.textContent = message;
+      errorDiv.style.cssText = `
+        color: #ef4444;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      `;
+      errorDiv.innerHTML = `<i class="bi bi-exclamation-circle"></i> ${message}`;
+      field.parentNode.appendChild(errorDiv);
+    }
+  }
+
+  /**
+   * Manipula envio do formulário
+   */
+  async handleSubmit(e) {
+    e.preventDefault();
+
+    // Valida todos os campos
+    const inputs = this.form.querySelectorAll('input[required], select[required]');
+    let isFormValid = true;
+
+    inputs.forEach(input => {
+      if (!this.validateField(input)) {
+        isFormValid = false;
+      }
+    });
+
+    if (!isFormValid) {
+      this.showMessage('Por favor, corrija os erros no formulário.', 'error');
+      return;
+    }
+
+    // Coleta dados do formulário
+    const formData = this.collectFormData();
+
+    // Mostra loading
+    this.setLoadingState(true);
+
+    try {
+      // Envia para Google Sheets
+      await this.sendToGoogleSheets(formData);
+      
+      // Sucesso
+      this.showSuccessMessage(formData);
+      this.form.reset();
+      
+    } catch (error) {
+      console.error('Erro ao enviar agendamento:', error);
+      this.showMessage('Erro ao enviar agendamento. Tente novamente.', 'error');
+    } finally {
+      this.setLoadingState(false);
+    }
+  }
+
+  /**
+   * Coleta dados do formulário
+   */
+  collectFormData() {
+    const formData = new FormData(this.form);
+    const data = {};
+
+    for (let [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+
+    // Adiciona dados extras
+    data.timestamp = new Date().toISOString();
+    data.status = 'Pendente';
+    data.fonte = 'Site Barbearia Brum';
+
+    return data;
+  }
+
+  /**
+   * Envia dados para Google Sheets
+   */
+  async sendToGoogleSheets(data) {
+    // Verifica se a URL foi configurada
+    if (this.scriptURL.includes('COLE_AQUI')) {
+      throw new Error('Configure a URL do Google Apps Script primeiro!');
+    }
+
+    const response = await fetch(this.scriptURL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    const result = await response.json();
+    
+    if (result.error) {
+      throw new Error(result.error);
+    }
+
+    console.log('📊 Dados enviados para planilha:', data);
+    return result;
+  }
+
+  /**
+   * Define estado de loading
+   */
+  setLoadingState(isLoading) {
+    const btnText = this.submitBtn.querySelector('.btn-text');
+    const btnLoading = this.submitBtn.querySelector('.btn-loading');
+
+    if (isLoading) {
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'flex';
+      this.submitBtn.disabled = true;
+    } else {
+      btnText.style.display = 'flex';
+      btnLoading.style.display = 'none';
+      this.submitBtn.disabled = false;
+    }
+  }
+
+  /**
+   * Mostra mensagem de sucesso
+   */
+  showSuccessMessage(data) {
+    const message = `
+      <div class="form-success">
+        <i class="bi bi-check-circle-fill"></i>
+        <div>
+          <strong>Agendamento enviado com sucesso!</strong><br>
+          <small>Entraremos em contato via WhatsApp para confirmar o horário.</small>
+        </div>
+      </div>
+    `;
+
+    this.insertMessage(message);
+
+    // Também envia via WhatsApp
+    setTimeout(() => {
+      this.sendWhatsAppNotification(data);
+    }, 1000);
+  }
+
+  /**
+   * Envia notificação via WhatsApp
+   */
+  sendWhatsAppNotification(data) {
+    const message = encodeURIComponent(
+      `🗓️ *NOVO AGENDAMENTO*\n\n` +
+      `👤 *Cliente:* ${data.nome}\n` +
+      `📱 *Telefone:* ${data.telefone}\n` +
+      `📅 *Data:* ${new Date(data.data).toLocaleDateString('pt-BR')}\n` +
+      `🕐 *Horário:* ${data.horario}\n` +
+      `✂️ *Serviço:* ${data.servico}\n` +
+      `${data.observacoes ? `📝 *Obs:* ${data.observacoes}\n` : ''}` +
+      `\n⏰ *Enviado em:* ${new Date().toLocaleString('pt-BR')}`
+    );
+
+    const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${message}`;
+    
+    // Pergunta se quer abrir WhatsApp
+    if (confirm('Deseja abrir o WhatsApp para enviar os detalhes do agendamento?')) {
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  /**
+   * Mostra mensagem genérica
+   */
+  showMessage(text, type = 'info') {
+    const iconClass = type === 'success' ? 'bi-check-circle-fill' : 
+                     type === 'error' ? 'bi-x-circle-fill' : 'bi-info-circle-fill';
+    
+    const className = type === 'success' ? 'form-success' : 
+                     type === 'error' ? 'form-error' : 'form-info';
+
+    const message = `
+      <div class="${className}">
+        <i class="bi ${iconClass}"></i>
+        <span>${text}</span>
+      </div>
+    `;
+
+    this.insertMessage(message);
+  }
+
+  /**
+   * Insere mensagem no DOM
+   */
+  insertMessage(messageHTML) {
+    // Remove mensagens anteriores
+    const existingMessages = this.form.parentNode.querySelectorAll('.form-success, .form-error, .form-info');
+    existingMessages.forEach(msg => msg.remove());
+
+    // Adiciona nova mensagem
+    this.form.insertAdjacentHTML('afterend', messageHTML);
+
+    // Remove após 5 segundos
+    setTimeout(() => {
+      const messages = this.form.parentNode.querySelectorAll('.form-success, .form-error, .form-info');
+      messages.forEach(msg => msg.remove());
+    }, 5000);
+  }
+
+  /**
+   * Obtém estatísticas (para admin)
+   */
+  getStats() {
+    // Aqui você pode implementar lógica para buscar stats da planilha
+    return {
+      totalAgendamentos: 0,
+      agendamentosHoje: 0,
+      proximosAgendamentos: 0
+    };
+  }
+}
+/**
+ * ========================================
  * CLASSE PARA GERENCIAR BOTÕES E AÇÕES
  * ========================================
  */
@@ -434,8 +787,22 @@ class ButtonManager {
     // Adiciona efeito visual
     this.addClickEffect();
     
-    // Abre WhatsApp ou rola para seção de contato
-    this.openWhatsApp();
+    // Rola para o formulário de agendamento
+    const agendamentoSection = document.getElementById('agendamento-section');
+    if (agendamentoSection) {
+      agendamentoSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+      
+      // Destaca o formulário
+      setTimeout(() => {
+        agendamentoSection.style.animation = 'pulse 1s ease-in-out';
+        setTimeout(() => {
+          agendamentoSection.style.animation = '';
+        }, 1000);
+      }, 500);
+    }
   }
 
   /**
@@ -447,35 +814,6 @@ class ButtonManager {
     setTimeout(() => {
       this.agendarBtn.classList.remove('clicked');
     }, 200);
-  }
-
-  /**
-   * Abre WhatsApp com mensagem pré-definida
-   */
-  openWhatsApp() {
-    const message = encodeURIComponent('Olá! Gostaria de agendar um horário na Barbearia Brum.');
-    const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${message}`;
-    
-    // Abre em nova aba
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-    
-    // Fallback: rolar para seção de contato se existir
-    const contatoSection = document.querySelector('#contato, .contato, [data-section="contato"]');
-    if (contatoSection) {
-      setTimeout(() => {
-        this.smoothScrollTo(contatoSection);
-      }, 500);
-    }
-  }
-
-  /**
-   * Scroll suave para elemento
-   */
-  smoothScrollTo(element) {
-    element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
   }
 }
 
@@ -564,6 +902,9 @@ class App {
     console.log('🚀 Iniciando Barbearia Brum App...');
     
     try {
+      // Inicializa sistema de agendamento
+      this.agendamentoSystem = new AgendamentoSystem();
+      
       // Inicializa carrossel
       const carouselContainer = document.querySelector('.carrosel-conteiner');
       if (carouselContainer) {
@@ -580,6 +921,7 @@ class App {
       this.setupGlobalEvents();
       
       console.log('✅ Aplicação inicializada com sucesso!');
+      console.log('📊 Sistema de agendamento ativo');
       
     } catch (error) {
       console.error('❌ Erro ao inicializar aplicação:', error);
