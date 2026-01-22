@@ -1058,6 +1058,131 @@ main {
 }
 
 /* ========================================
+   SEÇÃO DE CONTATO (VERSÃO GITHUB)
+======================================== */
+.contato-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--espacamento-xl);
+  margin-bottom: var(--espacamento-xl);
+}
+
+.contato-card {
+  background: var(--branco-off);
+  padding: var(--espacamento-xxl);
+  border-radius: var(--borda-radius-lg);
+  text-align: center;
+  border: var(--borda-sutil);
+  transition: all var(--transicao-media);
+  position: relative;
+  overflow: hidden;
+}
+
+.contato-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--preto-profundo), var(--cinza-escuro));
+  transform: scaleX(0);
+  transition: transform var(--transicao-media);
+}
+
+.contato-card:hover::before {
+  transform: scaleX(1);
+}
+
+.contato-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sombra-forte);
+  background: var(--branco-puro);
+}
+
+.contato-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--preto-profundo), var(--cinza-escuro));
+  border-radius: 50%;
+  margin: 0 auto var(--espacamento-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--branco-puro);
+  box-shadow: var(--sombra-media);
+  transition: all var(--transicao-media);
+}
+
+.contato-card:hover .contato-icon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: var(--sombra-forte);
+}
+
+.contato-card h3 {
+  font-family: var(--font-titulo);
+  font-size: 1.4rem;
+  color: var(--preto-profundo);
+  margin-bottom: var(--espacamento-md);
+  font-weight: 600;
+}
+
+.contato-card p {
+  color: var(--cinza-claro);
+  margin-bottom: var(--espacamento-lg);
+  line-height: 1.6;
+}
+
+.btn-contato-whatsapp,
+.btn-contato-telefone {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacamento-sm);
+  padding: var(--espacamento-md) var(--espacamento-xl);
+  background: linear-gradient(135deg, var(--preto-profundo), var(--cinza-escuro));
+  color: var(--branco-puro);
+  text-decoration: none;
+  border-radius: var(--borda-radius);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all var(--transicao-media);
+  box-shadow: var(--sombra-media);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-contato-whatsapp::before,
+.btn-contato-telefone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left var(--transicao-lenta);
+}
+
+.btn-contato-whatsapp:hover::before,
+.btn-contato-telefone:hover::before {
+  left: 100%;
+}
+
+.btn-contato-whatsapp:hover,
+.btn-contato-telefone:hover {
+  background: linear-gradient(135deg, var(--cinza-escuro), var(--cinza-medio));
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-forte);
+}
+
+.btn-contato-whatsapp i,
+.btn-contato-telefone i {
+  font-size: 1.2rem;
+}
+
+/* ========================================
    RESPONSIVIDADE MOBILE
 ======================================== */
 @media (max-width: 768px) {

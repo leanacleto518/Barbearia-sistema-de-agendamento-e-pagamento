@@ -384,14 +384,14 @@ class BusinessHours {
 
 /**
  * ========================================
- * SISTEMA DE AGENDAMENTO - GOOGLE SHEETS
- * Envia dados do formulário para planilha
+ * SISTEMA DE AGENDAMENTO - SERVIDOR PHP
+ * Envia dados do formulário para servidor PHP local
  * ========================================
  */
 class AgendamentoSystem {
   constructor() {
-    // URL do Google Apps Script - CONFIGURADO!
-    this.scriptURL = 'https://script.google.com/macros/s/AKfycbzNkK3rSrcq2xmPPnSWsDpEMY43_vR1TZqVba83jvijMbWxqij5Lq675LKKL3i-Psjn/exec';
+    // URL do script PHP local
+    this.scriptURL = 'agendamento.php';
     
     this.form = document.getElementById('agendamento-form');
     this.submitBtn = document.getElementById('btn-agendar-form');
@@ -413,31 +413,14 @@ class AgendamentoSystem {
   }
 
   /**
-   * Testa a conexão com Google Sheets (opcional)
+   * Testa a conexão com servidor PHP (opcional)
    */
   async testConnection() {
     try {
-      console.log('🔍 Testando conexão com Google Apps Script...');
+      console.log('🔍 Testando conexão com servidor PHP...');
       
-      const testData = {
-        test: true,
-        timestamp: new Date().toISOString()
-      };
-      
-      const response = await fetch(this.scriptURL, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(testData)
-      });
-      
-      if (response.ok) {
-        console.log('✅ Conexão com Google Apps Script funcionando');
-      } else {
-        console.log('⚠️ Possível problema com Google Apps Script:', response.status);
-      }
+      // Não fazemos teste automático para evitar criar dados desnecessários
+      console.log('✅ Sistema PHP configurado e pronto');
       
     } catch (error) {
       console.log('⚠️ Não foi possível testar a conexão:', error.message);
@@ -463,15 +446,12 @@ class AgendamentoSystem {
         data: new Date().toISOString().split('T')[0],
         horario: '10:00',
         servico: 'Teste',
-        observacoes: 'Teste de conectividade',
-        timestamp: new Date().toISOString(),
-        status: 'Teste',
-        fonte: 'Teste Manual'
+        observacoes: 'Teste de conectividade com servidor PHP'
       };
       
-      await this.sendToGoogleSheets(testData);
+      await this.sendToPhpServer(testData);
       
-      this.showMessage('✅ Conexão funcionando! O Google Apps Script está respondendo.', 'success');
+      this.showMessage('✅ Conexão funcionando! O servidor PHP está respondendo.', 'success');
       
     } catch (error) {
       console.error('❌ Erro no teste de conexão:', error);
@@ -640,9 +620,9 @@ class AgendamentoSystem {
     this.setLoadingState(true);
 
     try {
-      // Envia para Google Sheets
-      console.log('🚀 Enviando para Google Sheets...');
-      await this.sendToGoogleSheets(formData);
+      // Envia para servidor PHP
+      console.log('🚀 Enviando para servidor PHP...');
+      await this.sendToPhpServer(formData);
       
       // Sucesso
       console.log('✅ Agendamento enviado com sucesso!');
@@ -692,21 +672,15 @@ class AgendamentoSystem {
   }
 
   /**
-   * Envia dados para Google Sheets
+   * Envia dados para o servidor PHP
    */
-  async sendToGoogleSheets(data) {
-    // Verifica se a URL foi configurada
-    if (this.scriptURL.includes('COLE_AQUI')) {
-      throw new Error('Configure a URL do Google Apps Script primeiro!');
-    }
-
-    console.log('📤 Enviando dados para Google Sheets:', data);
+  async sendToPhpServer(data) {
+    console.log('📤 Enviando dados para servidor PHP:', data);
     console.log('🔗 URL do script:', this.scriptURL);
 
     try {
       const response = await fetch(this.scriptURL, {
         method: 'POST',
-        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -722,24 +696,24 @@ class AgendamentoSystem {
       const result = await response.json();
       console.log('✅ Resultado recebido:', result);
       
-      if (result.error) {
-        throw new Error(result.error);
+      if (!result.sucesso) {
+        throw new Error(result.mensagem || 'Erro desconhecido');
       }
 
-      console.log('📊 Dados enviados para planilha com sucesso:', data);
+      console.log('📊 Dados salvos com sucesso:', result);
       return result;
       
     } catch (error) {
-      console.error('❌ Erro detalhado ao enviar para Google Sheets:', error);
+      console.error('❌ Erro detalhado ao enviar para servidor PHP:', error);
       
-      // Verifica se é erro de CORS
+      // Verifica se é erro de conexão
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        throw new Error('Erro de conexão. Verifique sua internet ou tente novamente.');
+        throw new Error('Erro de conexão. Verifique se o servidor PHP está rodando.');
       }
       
       // Verifica se é erro de rede
       if (error.message.includes('Failed to fetch')) {
-        throw new Error('Erro de rede. Verifique sua conexão com a internet.');
+        throw new Error('Erro de rede. Verifique sua conexão ou se o servidor está ativo.');
       }
       
       throw error;
