@@ -406,7 +406,81 @@ class AgendamentoSystem {
     this.setupEventListeners();
     this.setupDateRestrictions();
     
+    // Teste de conectividade (opcional)
+    this.testConnection();
+    
     console.log('📅 Sistema de agendamento inicializado');
+  }
+
+  /**
+   * Testa a conexão com Google Sheets (opcional)
+   */
+  async testConnection() {
+    try {
+      console.log('🔍 Testando conexão com Google Apps Script...');
+      
+      const testData = {
+        test: true,
+        timestamp: new Date().toISOString()
+      };
+      
+      const response = await fetch(this.scriptURL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(testData)
+      });
+      
+      if (response.ok) {
+        console.log('✅ Conexão com Google Apps Script funcionando');
+      } else {
+        console.log('⚠️ Possível problema com Google Apps Script:', response.status);
+      }
+      
+    } catch (error) {
+      console.log('⚠️ Não foi possível testar a conexão:', error.message);
+    }
+  }
+
+  /**
+   * Testa a conexão manualmente
+   */
+  async testConnectionManual() {
+    const testBtn = document.getElementById('btn-teste-conexao');
+    const originalText = testBtn.innerHTML;
+    
+    testBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Testando...';
+    testBtn.disabled = true;
+    
+    try {
+      console.log('🧪 Teste manual de conexão iniciado...');
+      
+      const testData = {
+        nome: 'Teste de Conexão',
+        telefone: '(11) 99999-9999',
+        data: new Date().toISOString().split('T')[0],
+        horario: '10:00',
+        servico: 'Teste',
+        observacoes: 'Teste de conectividade',
+        timestamp: new Date().toISOString(),
+        status: 'Teste',
+        fonte: 'Teste Manual'
+      };
+      
+      await this.sendToGoogleSheets(testData);
+      
+      this.showMessage('✅ Conexão funcionando! O Google Apps Script está respondendo.', 'success');
+      
+    } catch (error) {
+      console.error('❌ Erro no teste de conexão:', error);
+      this.showMessage(`❌ Erro na conexão: ${error.message}`, 'error');
+      
+    } finally {
+      testBtn.innerHTML = originalText;
+      testBtn.disabled = false;
+    }
   }
 
   /**
@@ -428,6 +502,12 @@ class AgendamentoSystem {
     inputs.forEach(input => {
       input.addEventListener('blur', () => this.validateField(input));
     });
+
+    // Botão de teste de conexão (temporário)
+    const testBtn = document.getElementById('btn-teste-conexao');
+    if (testBtn) {
+      testBtn.addEventListener('click', () => this.testConnectionManual());
+    }
   }
 
   /**
@@ -534,6 +614,8 @@ class AgendamentoSystem {
   async handleSubmit(e) {
     e.preventDefault();
 
+    console.log('📝 Iniciando envio do formulário...');
+
     // Valida todos os campos
     const inputs = this.form.querySelectorAll('input[required], select[required]');
     let isFormValid = true;
@@ -545,27 +627,46 @@ class AgendamentoSystem {
     });
 
     if (!isFormValid) {
+      console.log('❌ Formulário inválido');
       this.showMessage('Por favor, corrija os erros no formulário.', 'error');
       return;
     }
 
     // Coleta dados do formulário
     const formData = this.collectFormData();
+    console.log('📋 Dados coletados:', formData);
 
     // Mostra loading
     this.setLoadingState(true);
 
     try {
       // Envia para Google Sheets
+      console.log('🚀 Enviando para Google Sheets...');
       await this.sendToGoogleSheets(formData);
       
       // Sucesso
+      console.log('✅ Agendamento enviado com sucesso!');
       this.showSuccessMessage(formData);
       this.form.reset();
       
     } catch (error) {
-      console.error('Erro ao enviar agendamento:', error);
-      this.showMessage('Erro ao enviar agendamento. Tente novamente.', 'error');
+      console.error('❌ Erro ao enviar agendamento:', error);
+      
+      // Mensagens de erro mais específicas
+      let errorMessage = 'Erro ao enviar agendamento. ';
+      
+      if (error.message.includes('conexão') || error.message.includes('rede')) {
+        errorMessage += 'Verifique sua conexão com a internet e tente novamente.';
+      } else if (error.message.includes('CORS')) {
+        errorMessage += 'Problema de configuração. Entre em contato conosco.';
+      } else if (error.message.includes('HTTP')) {
+        errorMessage += 'Servidor temporariamente indisponível. Tente novamente em alguns minutos.';
+      } else {
+        errorMessage += 'Tente novamente ou entre em contato conosco.';
+      }
+      
+      this.showMessage(errorMessage, 'error');
+      
     } finally {
       this.setLoadingState(false);
     }
@@ -599,27 +700,50 @@ class AgendamentoSystem {
       throw new Error('Configure a URL do Google Apps Script primeiro!');
     }
 
-    const response = await fetch(this.scriptURL, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    });
+    console.log('📤 Enviando dados para Google Sheets:', data);
+    console.log('🔗 URL do script:', this.scriptURL);
 
-    if (!response.ok) {
-      throw new Error(`Erro HTTP: ${response.status}`);
+    try {
+      const response = await fetch(this.scriptURL, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+
+      console.log('📡 Resposta do servidor:', response.status, response.statusText);
+
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status} - ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('✅ Resultado recebido:', result);
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      console.log('📊 Dados enviados para planilha com sucesso:', data);
+      return result;
+      
+    } catch (error) {
+      console.error('❌ Erro detalhado ao enviar para Google Sheets:', error);
+      
+      // Verifica se é erro de CORS
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        throw new Error('Erro de conexão. Verifique sua internet ou tente novamente.');
+      }
+      
+      // Verifica se é erro de rede
+      if (error.message.includes('Failed to fetch')) {
+        throw new Error('Erro de rede. Verifique sua conexão com a internet.');
+      }
+      
+      throw error;
     }
-
-    const result = await response.json();
-    
-    if (result.error) {
-      throw new Error(result.error);
-    }
-
-    console.log('📊 Dados enviados para planilha:', data);
-    return result;
   }
 
   /**

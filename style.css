@@ -726,46 +726,75 @@ main {
 }
 
 /* ========================================
-   FORMULÁRIO DE AGENDAMENTO - DESIGN ELEGANTE
+   FORMULÁRIO DE AGENDAMENTO - IDENTIDADE VISUAL INTEGRADA
 ======================================== */
 .agendamento-section {
-  background: linear-gradient(135deg, var(--cinza-escuro) 0%, var(--preto-carvao) 100%);
-  color: var(--branco-puro);
+  background: var(--branco-puro);
+  color: var(--preto-profundo);
   padding: var(--espacamento-xxl);
   border-radius: var(--borda-radius-lg);
   box-shadow: var(--sombra-forte);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  max-width: 800px;
+  border: var(--borda-sutil);
+  max-width: 900px;
   margin: 0 auto;
+  position: relative;
+}
+
+.agendamento-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--preto-profundo), var(--cinza-escuro), var(--preto-profundo));
+  border-radius: var(--borda-radius-lg) var(--borda-radius-lg) 0 0;
 }
 
 .agendamento-section h2 {
   font-family: var(--font-titulo);
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   text-align: center;
   margin-bottom: var(--espacamento-xxl);
-  font-weight: 600;
-  letter-spacing: -0.5px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--preto-profundo);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--espacamento-sm);
+  gap: var(--espacamento-md);
+  position: relative;
+}
+
+.agendamento-section h2::after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--preto-profundo), var(--cinza-escuro));
+  margin: var(--espacamento-lg) auto 0;
+  border-radius: 2px;
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .agendamento-section h2 i {
-  font-size: 2.4rem;
+  font-size: 2.8rem;
+  color: var(--cinza-escuro);
 }
 
 .agendamento-form {
   display: flex;
   flex-direction: column;
-  gap: var(--espacamento-lg);
+  gap: var(--espacamento-xl);
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--espacamento-lg);
+  gap: var(--espacamento-xl);
 }
 
 .input-group {
@@ -776,81 +805,97 @@ main {
 .input-group label {
   display: flex;
   align-items: center;
-  gap: var(--espacamento-xs);
-  margin-bottom: var(--espacamento-sm);
-  font-weight: 500;
-  font-size: 0.95rem;
-  color: var(--branco-puro);
+  gap: var(--espacamento-sm);
+  margin-bottom: var(--espacamento-md);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--preto-profundo);
+  font-family: var(--font-texto);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .input-group label i {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  color: var(--cinza-escuro);
 }
 
 .input-group input,
 .input-group select,
 .input-group textarea {
   width: 100%;
-  padding: var(--espacamento-md);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  padding: var(--espacamento-lg);
+  border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--borda-radius);
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--branco-puro);
+  background: var(--branco-off);
+  color: var(--preto-profundo);
   font-size: 1rem;
   font-family: var(--font-texto);
+  font-weight: 400;
   transition: all var(--transicao-media);
-  backdrop-filter: blur(10px);
+  box-shadow: var(--sombra-inset);
 }
 
 .input-group input::placeholder,
 .input-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--cinza-claro);
+  font-style: italic;
 }
 
 .input-group input:focus,
 .input-group select:focus,
 .input-group textarea:focus {
   outline: none;
-  border-color: var(--branco-puro);
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  border-color: var(--preto-profundo);
+  background: var(--branco-puro);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .input-group select {
   cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
 }
 
 .input-group select option {
-  background: var(--cinza-escuro);
-  color: var(--branco-puro);
+  background: var(--branco-puro);
+  color: var(--preto-profundo);
   padding: var(--espacamento-sm);
+  font-weight: 500;
 }
 
 .input-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 100px;
+  line-height: 1.6;
 }
 
 .btn-agendar-form {
-  background: linear-gradient(135deg, var(--branco-puro), #e0e0e0);
-  color: var(--preto-profundo);
+  background: linear-gradient(135deg, var(--preto-profundo), var(--cinza-escuro));
+  color: var(--branco-puro);
   border: none;
-  padding: var(--espacamento-lg) var(--espacamento-xxl);
+  padding: var(--espacamento-xl) var(--espacamento-xxl);
   font-family: var(--font-texto);
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   border-radius: var(--borda-radius);
   cursor: pointer;
   transition: all var(--transicao-media);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--espacamento-sm);
-  margin-top: var(--espacamento-lg);
+  gap: var(--espacamento-md);
+  margin-top: var(--espacamento-xl);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--sombra-forte);
+  border: 2px solid transparent;
 }
 
 .btn-agendar-form::before {
@@ -860,7 +905,7 @@ main {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left var(--transicao-lenta);
 }
 
@@ -869,25 +914,32 @@ main {
 }
 
 .btn-agendar-form:hover {
-  background: linear-gradient(135deg, #f0f0f0, var(--branco-puro));
-  transform: translateY(-2px);
-  box-shadow: var(--sombra-forte);
+  background: linear-gradient(135deg, var(--cinza-escuro), var(--cinza-medio));
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-agendar-form:active {
+  transform: translateY(-1px);
 }
 
 .btn-agendar-form:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+  background: var(--cinza-claro);
 }
 
 .btn-agendar-form:disabled:hover {
   transform: none;
+  box-shadow: var(--sombra-sutil);
 }
 
 .btn-loading {
   display: flex;
   align-items: center;
-  gap: var(--espacamento-xs);
+  gap: var(--espacamento-sm);
 }
 
 .btn-loading i {
@@ -902,45 +954,75 @@ main {
 .form-info {
   margin-top: var(--espacamento-xl);
   padding: var(--espacamento-lg);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--branco-off);
   border-radius: var(--borda-radius);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   text-align: center;
+  box-shadow: var(--sombra-inset);
 }
 
 .form-info p {
   margin: 0;
-  font-size: 0.9rem;
-  opacity: 0.9;
+  font-size: 0.95rem;
+  color: var(--cinza-claro);
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--espacamento-sm);
+  font-weight: 500;
+}
+
+.form-info i {
+  color: var(--cinza-escuro);
+  font-size: 1.1rem;
+}
+
+/* Estados de validação */
+.field-error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: var(--espacamento-xs);
+  display: flex;
+  align-items: center;
   gap: var(--espacamento-xs);
+  font-weight: 500;
 }
 
 /* Estados de sucesso e erro */
 .form-success {
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  padding: var(--espacamento-lg);
+  background: linear-gradient(135deg, var(--preto-profundo), var(--cinza-escuro));
+  color: var(--branco-puro);
+  padding: var(--espacamento-xl);
   border-radius: var(--borda-radius);
-  margin-top: var(--espacamento-lg);
+  margin-top: var(--espacamento-xl);
   display: flex;
   align-items: center;
-  gap: var(--espacamento-sm);
+  gap: var(--espacamento-md);
   animation: slideInUp 0.5s ease;
+  box-shadow: var(--sombra-media);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-success i {
+  font-size: 1.5rem;
+  color: #10b981;
 }
 
 .form-error {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-  padding: var(--espacamento-lg);
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: var(--branco-puro);
+  padding: var(--espacamento-xl);
   border-radius: var(--borda-radius);
-  margin-top: var(--espacamento-lg);
+  margin-top: var(--espacamento-xl);
   display: flex;
   align-items: center;
-  gap: var(--espacamento-sm);
+  gap: var(--espacamento-md);
   animation: slideInUp 0.5s ease;
+  box-shadow: var(--sombra-media);
+}
+
+.form-error i {
+  font-size: 1.5rem;
 }
 
 @keyframes slideInUp {
@@ -952,6 +1034,27 @@ main {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Efeitos de hover nos campos */
+.input-group:hover input,
+.input-group:hover select,
+.input-group:hover textarea {
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow: var(--sombra-sutil);
+}
+
+/* Estilo para campos preenchidos */
+.input-group input:valid,
+.input-group select:valid,
+.input-group textarea:valid {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: var(--branco-puro);
+}
+
+/* Animação de entrada para o formulário */
+.agendamento-form {
+  animation: fadeInUp 0.8s ease-out;
 }
 
 /* ========================================
@@ -1055,14 +1158,39 @@ main {
   /* Formulário de agendamento mobile */
   .form-row {
     grid-template-columns: 1fr;
+    gap: var(--espacamento-lg);
   }
   
   .agendamento-section {
     padding: var(--espacamento-xl) var(--espacamento-lg);
+    margin: 0 var(--espacamento-md);
   }
   
   .agendamento-section h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    flex-direction: column;
+    gap: var(--espacamento-sm);
+  }
+  
+  .agendamento-section h2 i {
+    font-size: 2.2rem;
+  }
+  
+  .input-group label {
+    font-size: 0.9rem;
+  }
+  
+  .input-group input,
+  .input-group select,
+  .input-group textarea {
+    padding: var(--espacamento-md);
+    font-size: 0.95rem;
+  }
+  
+  .btn-agendar-form {
+    padding: var(--espacamento-lg) var(--espacamento-xl);
+    font-size: 1rem;
+    letter-spacing: 1px;
   }
 }
 
@@ -1182,6 +1310,146 @@ a:focus {
 .btn-agendar:focus {
   outline: 3px solid var(--branco-puro);
   outline-offset: 3px;
+}
+
+/* ========================================
+   RODAPÉ - DESIGN COMPACTO E ELEGANTE
+======================================== */
+.footer {
+  background: linear-gradient(135deg, var(--preto-profundo) 0%, var(--cinza-escuro) 100%);
+  color: var(--branco-puro);
+  margin-top: var(--espacamento-xl);
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--branco-puro), transparent);
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--espacamento-xl) var(--espacamento-lg);
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--espacamento-xl);
+  margin-bottom: var(--espacamento-lg);
+}
+
+.footer-section h3 {
+  font-family: var(--font-titulo);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: var(--espacamento-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--espacamento-xs);
+  color: var(--branco-puro);
+}
+
+.footer-section h3 i {
+  font-size: 1.1rem;
+  color: var(--cinza-claro);
+}
+
+.footer-section p {
+  margin: var(--espacamento-xs) 0;
+  color: var(--cinza-suave);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.footer-section p i {
+  margin-right: var(--espacamento-xs);
+  color: var(--cinza-claro);
+}
+
+/* Redes sociais compactas */
+.footer-social {
+  display: flex;
+  gap: var(--espacamento-sm);
+  margin-top: var(--espacamento-sm);
+}
+
+.footer-social a {
+  width: 35px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--branco-puro);
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all var(--transicao-media);
+}
+
+.footer-social a:hover {
+  background: var(--branco-puro);
+  color: var(--preto-profundo);
+  transform: translateY(-2px);
+}
+
+/* Rodapé inferior compacto */
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--espacamento-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: var(--cinza-suave);
+}
+
+.footer-link {
+  color: var(--cinza-suave);
+  text-decoration: none;
+  transition: color var(--transicao-rapida);
+  font-weight: 500;
+}
+
+.footer-link:hover {
+  color: var(--branco-puro);
+}
+
+/* ========================================
+   RESPONSIVIDADE DO RODAPÉ COMPACTO
+======================================== */
+@media (max-width: 768px) {
+  .footer-content {
+    padding: var(--espacamento-lg) var(--espacamento-md);
+  }
+  
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: var(--espacamento-lg);
+    text-align: center;
+  }
+  
+  .footer-social {
+    justify-content: center;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: var(--espacamento-sm);
+    text-align: center;
+  }
 }
 
 /* ========================================
