@@ -1,0 +1,11 @@
+{
+    "name": "barbearia-brum/backend",
+    "description": "Sistema de agendamento para Barbearia Brum",
+    "type": "project",
+    "require": {
+        "php": "^8.0"
+    },
+    "scripts": {
+        "start": "php -S 0.0.0.0:$PORT"
+    }
+}

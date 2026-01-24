@@ -390,8 +390,8 @@ class BusinessHours {
  */
 class AgendamentoSystem {
   constructor() {
-    // URL do script PHP online - CONFIGURE COM SUA HOSPEDAGEM!
-    this.scriptURL = 'https://SEU_SITE.infinityfreeapp.com/agendamento-online.php';
+    // URL do servidor online no Render
+    this.scriptURL = 'https://barbearia-brum-backend.onrender.com/agendamento-online.php';
     
     this.form = document.getElementById('agendamento-form');
     this.submitBtn = document.getElementById('btn-agendar-form');
