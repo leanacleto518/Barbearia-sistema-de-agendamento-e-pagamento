@@ -4,15 +4,12 @@
 
 ### **1. Preparar Repositório**
 ```bash
-# Criar repositório separado para o backend
-git init barbearia-backend
+# Os arquivos já estão prontos na pasta barbearia-backend/
+# Navegue até a pasta
 cd barbearia-backend
 
-# Copiar arquivos necessários
-cp agendamento-online.php .
-cp composer.json .
-cp index.php .
-cp README_RENDER.md .
+# Inicializar repositório Git
+git init
 ```
 
 ### **2. Fazer Push para GitHub**
