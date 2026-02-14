@@ -394,7 +394,7 @@ class AgendamentoSystem {
     // Prioriza `window.BACKEND_URL` (definido no HTML) para facilitar deploys em GitHub Pages
     this.scriptURL = (window.BACKEND_URL && window.BACKEND_URL.length)
       ? window.BACKEND_URL
-      : 'https://barbearia-backend-8cse.onrender.com';
+      : 'https://barbearia-backend-8cse.onrender.com/agendamento-online.php';
     
     this.form = document.getElementById('agendamento-form');
     this.submitBtn = document.getElementById('btn-agendar-form');
