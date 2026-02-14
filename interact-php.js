@@ -390,8 +390,11 @@ class BusinessHours {
  */
 class AgendamentoSystem {
   constructor() {
-    // URL do script PHP local
-    this.scriptURL = 'agendamento.php';
+    // URL do backend hospedado no Render
+    // Prioriza `window.BACKEND_URL` (definido no HTML) para facilitar deploys em GitHub Pages
+    this.scriptURL = (window.BACKEND_URL && window.BACKEND_URL.length)
+      ? window.BACKEND_URL
+      : 'https://barbearia-backend-8cse.onrender.com';
     
     this.form = document.getElementById('agendamento-form');
     this.submitBtn = document.getElementById('btn-agendar-form');

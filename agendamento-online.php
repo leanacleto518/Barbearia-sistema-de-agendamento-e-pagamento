@@ -8,10 +8,28 @@
 
 // Configurações para hospedagem online
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: https://leanacleto518.github.io');
+// CORS: permitir apenas origens confiáveis (aceita localhost para testes e o domínio do GitHub Pages)
+$allowed_origins = [
+    'https://leanacleto518.github.io',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+];
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowed_origins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+} else {
+    // Fallback seguro — mantém o domínio original para produção
+    header('Access-Control-Allow-Origin: https://leanacleto518.github.io');
+}
+
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, Origin, Accept');
 header('Access-Control-Allow-Credentials: true');
+// Cache para preflight (10 minutos)
+header('Access-Control-Max-Age: 600');
 
 // Responde a requisições OPTIONS (CORS preflight)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

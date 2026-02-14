@@ -391,7 +391,10 @@ class BusinessHours {
 class AgendamentoSystem {
   constructor() {
     // URL do servidor online no Render
-    this.scriptURL = 'https://barbearia-brum-backend.onrender.com/agendamento-online.php';
+    // Permite configuração externa via `window.BACKEND_URL` (ex: adicionado no HTML do GitHub Pages)
+    this.scriptURL = (window.BACKEND_URL && window.BACKEND_URL.length)
+      ? window.BACKEND_URL
+      : 'https://barbearia-backend-8cse.onrender.com';
     
     this.form = document.getElementById('agendamento-form');
     this.submitBtn = document.getElementById('btn-agendar-form');
